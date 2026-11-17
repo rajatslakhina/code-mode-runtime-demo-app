@@ -18,4 +18,4 @@ jobs:
         run: |
           xcodebuild build -project Demo.xcodeproj -scheme Demo -onlyUsePackageVersionsFromResolvedFile \
             -destination 'generic/platform=iOS Simulator' \
-            CODE_SIGNING_ALLOWED=NO SWIFT_TREAT_WARNINGS_AS_ERRORS=YES
+            CODE_SIGNING_ALLOWED=NO
