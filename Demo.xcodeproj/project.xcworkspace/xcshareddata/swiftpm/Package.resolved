@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/rajatslakhina/code-mode-runtime-kit.git",
       "state" : {
-        "revision" : "3d0336462b070092bf7c1ba64ff0aab1a2c86432",
-        "version" : "1.0.0"
+        "revision" : "e47e4650ca9e8f8186586b8584bd6e61ce3bfe87",
+        "version" : "1.0.1"
       }
     }
   ],

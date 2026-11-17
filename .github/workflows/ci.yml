@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Xcode version
         run: xcodebuild -version
-      - name: Resolve the remote package (upToNextMajor from 1.0.0, Package.resolved committed)
+      - name: Resolve the remote package (upToNextMajor from 1.0.1, Package.resolved committed)
         run: xcodebuild -resolvePackageDependencies -project Demo.xcodeproj -scheme Demo -onlyUsePackageVersionsFromResolvedFile
       - name: Build for a generic iOS Simulator
         run: |

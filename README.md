@@ -16,7 +16,7 @@
   <img src="Demo/Screenshots/cost.png" width="180" alt="Cost model: input tokens vs tool calls for classic tool use and code mode">
 </p>
 
-*Real screenshots from an iOS 27.2 Simulator (iPhone 18 Pro), taken from a build that resolved CodeModeKit 1.0.0 from GitHub. Left to right: monthly review, the confirmation dialog for a delete, the runaway loop stopped by the budget; then the exfiltration probe, the read-only run, the manifest and the cost model.*
+*Real screenshots from an iOS 27.2 Simulator (iPhone 18 Pro), taken from a build that resolved CodeModeKit 1.0.1 from GitHub. Left to right: monthly review, the confirmation dialog for a delete, the runaway loop stopped by the budget; then the exfiltration probe, the read-only run, the manifest and the cost model.*
 
 ## Why this matters
 
@@ -36,7 +36,7 @@ The **Manifest** tab shows the TypeScript declarations the model is given, for t
 
 - **`Demo/DemoApp.swift`** holds the whole app. The app owns its domain (`ExpenseStore`, an actor) and its four tools (`ListExpenses`, `CategoryBudgets`, `FlagExpense`, `DeleteExpense`), each a `CodeModeTool` with a declared tier and schema. That's the app's reason to import CodeModeKit: the runtime, bridge, policy and sandbox come from the library, and the authority comes from the app.
 - **`ConfirmationCenter`** (`@MainActor @Observable`) turns the library's `ConfirmationProvider` into a SwiftUI alert. When a run ends it denies anything still pending, so no continuation leaks.
-- **The dependency** is a remote Swift package (`XCRemoteSwiftPackageReference` to `https://github.com/rajatslakhina/code-mode-runtime-kit.git`), pinned with `upToNextMajorVersion` from `1.0.0`, with `Package.resolved` committed. It doesn't use a local path or a branch.
+- **The dependency** is a remote Swift package (`XCRemoteSwiftPackageReference` to `https://github.com/rajatslakhina/code-mode-runtime-kit.git`), pinned with `upToNextMajorVersion` from `1.0.1`, with `Package.resolved` committed. It doesn't use a local path or a branch.
 - **Launch arguments** for repeatable screenshots: `-preset review|dedupe|exfil|runaway|scope`, `-autorun YES` (runs once on first appearance), and `-tab run|manifest|cost`.
 
 ## How to run it
@@ -50,11 +50,11 @@ The **Manifest** tab shows the TypeScript declarations the model is given, for t
 
 Three different things were checked, and they're listed separately on purpose:
 
-- **Resolves and builds from GitHub.** `xcodebuild -resolvePackageDependencies` resolved `CodeModeKit @ 1.0.0` from `https://github.com/rajatslakhina/code-mode-runtime-kit.git` (pinned in the committed `Package.resolved`). The app then built for `generic/platform=iOS Simulator` with Xcode 27.2: `BUILD SUCCEEDED`, 0 Swift warnings. The only build-log warning is Xcode's own "Metadata extraction skipped, no AppIntents.framework dependency found".
+- **Resolves and builds from GitHub.** `xcodebuild -resolvePackageDependencies` resolved `CodeModeKit @ 1.0.1` from `https://github.com/rajatslakhina/code-mode-runtime-kit.git` (pinned in the committed `Package.resolved`). The app then built for `generic/platform=iOS Simulator` with Xcode 27.2: `BUILD SUCCEEDED`, 0 Swift warnings. The only build-log warning is Xcode's own "Metadata extraction skipped, no AppIntents.framework dependency found".
 - **Ran on a Simulator.** That build was installed on a dedicated "CodeMode Demo iPhone 18 Pro" simulator (iOS 27.2) and launched headless with `xcrun simctl`, without Xcode's UI. There were seven launches: `-preset review|dedupe|exfil|runaway|scope -autorun YES`, `-tab manifest` and `-tab cost`. The app process was confirmed alive after each launch, and the seven screenshots above were captured from those launches. Nobody tapped anything. The dedupe screenshot shows the dialog waiting for an answer; Approve and Deny weren't exercised on the Simulator. The library's tests cover both decisions.
 - **CI:** the [Actions workflow](https://github.com/rajatslakhina/code-mode-runtime-demo-app/actions/workflows/ci.yml) runs on a `macos-15` runner on pushes to `main`, on tags and on pull requests. It resolves the package from GitHub using only the committed `Package.resolved`, then builds for a generic iOS Simulator. The app target sets `SWIFT_TREAT_WARNINGS_AS_ERRORS = YES` in the project, scoped to the app so it doesn't collide with the warning suppression Xcode applies to remote packages. The workflow compiles the app; it doesn't launch it.
 
-The library's own verification (72 tests on macOS, 57 on Linux, 29/29 mutants caught) is in the [library README](https://github.com/rajatslakhina/code-mode-runtime-kit#verification).
+The library's own verification (72 tests on macOS, 57 on Linux; 29/29 mutants caught locally, 27 of them re-run in CI) is in the [library README](https://github.com/rajatslakhina/code-mode-runtime-kit#verification). The library's 1.0.1 has the same sources as 1.0.0; it changed only tests and CI.
 
 ## License
 
